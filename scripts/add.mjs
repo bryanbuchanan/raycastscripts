@@ -21,7 +21,8 @@ import { exec } from 'child_process'
 exec('pbpaste', (err, stdout) => {
 	
 	let text = stdout
-	const regex = /:\s*\$?([\d,]+(?:\.\d+)?)(?=\s*$)/gm
+	// const regex = /:\s*\$?([\d,]+(?:\.\d+)?)(?=\s*$)/gm
+	const regex = /(?::\s*\$?([\d,]+(?:\.\d+)?)(?=\s*$))|(^\s*\$?([\d,]+(?:\.\d+)?)(?=\s*$))/gm
 	const matches = text.match(regex)
 	
 	if (matches) {
