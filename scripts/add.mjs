@@ -36,12 +36,12 @@ exec('pbpaste', (err, stdout) => {
 	lines.forEach(line => {
 		
 		// Get matches
-		const regex = /(?<=:\s*)-?\d{1,3}(,\d{3})*(\.\d{2})?/
+		const regex = /(?<=[:|]\s*)-?\d{1,3}(,\d{3})*(\.\d{2})?/
 		const match = line.match(regex)
 		
 		if (match) {
 			// Convert to float
-			const float = parseFloat(match[0].replace(/,/g, ''))
+			let float = parseFloat(match[0].replace(/,/g, ''))
 			// Add match to numbers
 			numbers.push(float)
 		}
@@ -52,6 +52,9 @@ exec('pbpaste', (err, stdout) => {
 	numbers.forEach(number => {
 		total += number
 	})
+	
+	// Round
+	total = total.toFixed(2)
 
 	// Copy to clipboard and display	
 	const childProcess = exec('pbcopy', () => {
