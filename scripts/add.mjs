@@ -6,6 +6,8 @@
 // @raycast.title Add Numbers Together
 // @raycast.mode silent
 
+// silent, fullOutput
+
 // Optional parameters:
 // @raycast.icon ➕
 
@@ -20,24 +22,42 @@ import { exec } from 'child_process'
 
 exec('pbpaste', (err, stdout) => {
 	
+	// Get clipboard content
 	let text = stdout
-	const regex = /(?::\s*\$?([\d,]+(?:\.\d+)?)(?=\s*$))|(^\s*\$?([\d,]+(?:\.\d+)?)(?=\s*$))/gm
-	const matches = text.match(regex)
 	
-	if (matches) {
+	// Create empty number array
+	const numbers = []
+	let total = 0
 	
-		const floats = matches.map(match => parseFloat(match.replace(/[^\d.]/g, '')))
-		const total = floats.reduce((sum, num) => sum + num, 0)
+	// Split into individual lines
+	const lines = text.split('\n')
+	
+	// Loop through each line
+	lines.forEach(line => {
 		
-		const childProcess = exec('pbcopy', () => {
-			return console.log(total)
-		})
+		// Get matches
+		const regex = /(?<=:\s*)-?\d{1,3}(,\d{3})*(\.\d{2})?/
+		const match = line.match(regex)
 		
-		childProcess.stdin.write(`${total}`)
-		childProcess.stdin.end()
+		if (match) {
+			// Convert to float
+			const float = parseFloat(match[0].replace(/,/g, ''))
+			// Add match to numbers
+			numbers.push(float)
+		}
 		
-	} else {
-		console.log('No numbers found.')
-	}
+	})
+	
+	// Add up
+	numbers.forEach(number => {
+		total += number
+	})
+
+	// Copy to clipboard and display	
+	const childProcess = exec('pbcopy', () => {
+		return console.log(total)
+	})
+	childProcess.stdin.write(`${total}`)
+	childProcess.stdin.end()
 	
 })
