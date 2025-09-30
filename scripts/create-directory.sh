@@ -13,5 +13,8 @@
 # @raycast.author bryanbuchanan
 # @raycast.authorURL https://raycast.com/bryanbuchanan
 
-mkdir -p "$(eval echo $(pbpaste))" && open "$(eval echo $(pbpaste))"
+PREFIX="~/Library/CloudStorage/Dropbox-ERAMoto/ERA File Server"
+CLIPBOARD=$(pbpaste)
+FULL_PATH="${PREFIX}/${CLIPBOARD}"
+mkdir -p "$(eval echo ${FULL_PATH})" && open "$(eval echo ${FULL_PATH})"
 
