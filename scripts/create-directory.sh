@@ -15,6 +15,6 @@
 
 PREFIX="~/Library/CloudStorage/Dropbox-ERAMoto/ERA File Server"
 CLIPBOARD=$(pbpaste)
-FULL_PATH="${PREFIX}/${CLIPBOARD}"
+FULL_PATH="${PREFIX}/${CLIPBOARD#$PREFIX}" # Removes potential duplicate "prefixes" in directory path
 mkdir -p "$(eval echo ${FULL_PATH})" && open "$(eval echo ${FULL_PATH})"
 
